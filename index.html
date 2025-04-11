@@ -8,81 +8,127 @@
 </head>
 
 <body>
+    <div class="human-input"></div>
     <p class="result"></p>
     <p class="status"></p>
-    <p>Computer:</p>
-    <p class="computer-score"></p>
-    <p>Human:</p>
-    <p class="human-score"></p>
+    <div>Score
+        <p>Computer:</p>
+        <p class="computer-score"></p>
+        <p>Human:</p>
+        <p class="human-score"></p>
+    </div>
 
 </body>
 
 <script>
-    const result_elem = document.querySelector('.result');
-    const status_elem = document.querySelector('.status');
-    const computer_score_elem = document.querySelector('.computer-score');
-    const human_score_elem = document.querySelector('.human-score');
+    const resultElem = document.querySelector('.result');
+    const statusElem = document.querySelector('.status');
+    const computerScoreElem = document.querySelector('.computer-score');
+    const humanScoreElem = document.querySelector('.human-score');
+    const humanInputElem = document.querySelector(".human-input");
 
-    let human_score = 0;
-    let computer_score = 0;
+    const ROCK = 'rock';
+    const PAPER = 'paper';
+    const SCISSORS = 'scissors';
+
+    let humanScore = 0;
+    let computerScore = 0;
 
     console.log("Starting");
 
-    computer_score_elem.textContent = computer_score;
-    human_score_elem.textContent = human_score;
+    computerScoreElem.textContent = computerScore;
+    humanScoreElem.textContent = humanScore;
+    /*
+    In our UI, the player should be able to play the game by clicking on 
+    buttons rather than typing their answer in a prompt.
+    DONE For now, remove the logic that plays exactly five rounds.
+    DONE Create three buttons, one for each selection. Add an event listener to the buttons that call your playRound function with the correct playerSelection every time a button is clicked. (you can keep the console.logs for this step)
+    DONE Add a div for displaying results and change all of your console.logs into DOM methods.
+    Display the running score, and announce a winner of the game once one player reaches 5 points.
+    You will likely have to refactor (rework/rewrite) your original code to make it work for this. That’s OK! Reworking old code is an important part of a programmer’s life.
+    */
 
-    for (let i = 1; i <= 5; i++) {
-        let human_guess = prompt("Guess rock, paper or scissors");
+    function displayScore() {
+        humanScoreElem.textContent = humanScore;
+        computerScoreElem.textContent = computerScore;
 
-        let computer_guess_num = Math.floor(Math.random() * 3);
-        let computer_guess = '';
-        switch (computer_guess_num) {
+    }
+
+    function resetScore() {
+        humanScore = 0;
+        computerScore = 0
+        displayScore();
+    }
+
+    function playRound(humanGuess) {
+        let computerGuessNum = Math.floor(Math.random() * 3);
+        let computerGuess = '';
+        switch (computerGuessNum) {
             case 0:
-                computer_guess = 'rock';
+                computerGuess = ROCK;
                 break;
-            case 1: computer_guess = 'paper';
+            case 1: computerGuess = PAPER;
                 break;
             case 2:
-                computer_guess = 'scissors';
+                computerGuess = SCISSORS;
                 break;
         }
 
-        if (computer_guess == 'rock' && human_guess == 'rock' 
-        || computer_guess == 'scissors' && human_guess == 'scissors'
-        || computer_guess == 'paper' && human_guess == 'paper') {
-            human_score +=1;
-            computer_score += 1;
-        } else if (computer_guess == 'rock') {
-            if (human_guess == 'paper') {
-                human_score +=1 ;
-            } else if (human_guess ='scissors') {
-                computer_score += 1;
-            } else {
-                console.log(`invalid human input ${human_guess}`);
+        resultElem.textContent = `Computer Guessed: ${computerGuess}`;
+
+        if (computerGuess == ROCK && humanGuess == ROCK
+            || computerGuess == SCISSORS && humanGuess == SCISSORS
+            || computerGuess == PAPER && humanGuess == PAPER) {
+            /* tie */
+
+        } else if (computerGuess == ROCK) {
+            if (humanGuess == PAPER) {
+                humanScore += 1;
+            } else if (humanGuess = SCISSORS) {
+                computerScore += 1;
             }
-        } else if (computer_guess == 'paper') {
-            if (human_guess == 'scissors') {
-                human_score +=1 ;
-            } else if (human_guess ='rock') {
-                computer_score += 1;
-            } else {
-                console.log(`invalid human input ${human_guess}`);
+        } else if (computerGuess == PAPER) {
+            if (humanGuess == SCISSORS) {
+                humanScore += 1;
+            } else if (humanGuess = ROCK) {
+                computerScore += 1;
             }
-        } else if (computer_guess == 'scissors') {
-            if (human_guess == 'rock') {
-                human_score +=1 ;
-            } else if (human_guess ='paper') {
-                computer_score += 1;
-            } else {
-                console.log(`Invalid Human input ${human_guess}`);
+        } else if (computerGuess == SCISSORS) {
+            if (humanGuess == ROCK) {
+                humanScore += 1;
+            } else if (humanGuess = PAPER) {
+                computerScore += 1;
             }
-        } else {
-            console.log(`Invalid Computer input ${computer_guess}`);
         }
 
-        computer_score_elem.textContent = computer_score;
-        human_score_elem.textContent = human_score;
+        displayScore();
+
+        if (humanScore >= 5 || computerScore >= 5) {
+            setTimeout(() => {
+                // Code here runs after a short delay, allowing the DOM to update
+
+                if (humanScore > computerScore) {
+                    alert("Human won!");
+                } else {
+                    alert("Computer won!");
+                }
+                resetScore();
+            }, 0);
+
+        }
     }
+
+
+    function makeButton(value) {
+        const b = document.createElement('button');
+        b.textContent = value;
+        b.addEventListener('click', () => playRound(value));
+        humanInputElem.appendChild(b);
+    }
+
+    const rock_button = makeButton(ROCK);
+    const paper_button = makeButton(PAPER);
+    const scissors_button = makeButton(SCISSORS);
 </script>
 
 </html>

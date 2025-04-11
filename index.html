@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p class="result"></p>
+    <p class="status"></p>
+    <p>Computer:</p>
+    <p class="computer-score"></p>
+    <p>Human:</p>
+    <p class="human-score"></p>
+
+</body>
+
+<script>
+    const result_elem = document.querySelector('.result');
+    const status_elem = document.querySelector('.status');
+    const computer_score_elem = document.querySelector('.computer-score');
+    const human_score_elem = document.querySelector('.human-score');
+
+    let human_score = 0;
+    let computer_score = 0;
+
+    console.log("Starting");
+
+    computer_score_elem.textContent = computer_score;
+    human_score_elem.textContent = human_score;
+
+    for (let i = 1; i <= 5; i++) {
+        let human_guess = prompt("Guess rock, paper or scissors");
+
+        let computer_guess_num = Math.floor(Math.random() * 3);
+        let computer_guess = '';
+        switch (computer_guess_num) {
+            case 0:
+                computer_guess = 'rock';
+                break;
+            case 1: computer_guess = 'paper';
+                break;
+            case 2:
+                computer_guess = 'scissors';
+                break;
+        }
+
+        if (computer_guess == 'rock' && human_guess == 'rock' 
+        || computer_guess == 'scissors' && human_guess == 'scissors'
+        || computer_guess == 'paper' && human_guess == 'paper') {
+            human_score +=1;
+            computer_score += 1;
+        } else if (computer_guess == 'rock') {
+            if (human_guess == 'paper') {
+                human_score +=1 ;
+            } else if (human_guess ='scissors') {
+                computer_score += 1;
+            } else {
+                console.log(`invalid human input ${human_guess}`);
+            }
+        } else if (computer_guess == 'paper') {
+            if (human_guess == 'scissors') {
+                human_score +=1 ;
+            } else if (human_guess ='rock') {
+                computer_score += 1;
+            } else {
+                console.log(`invalid human input ${human_guess}`);
+            }
+        } else if (computer_guess == 'scissors') {
+            if (human_guess == 'rock') {
+                human_score +=1 ;
+            } else if (human_guess ='paper') {
+                computer_score += 1;
+            } else {
+                console.log(`Invalid Human input ${human_guess}`);
+            }
+        } else {
+            console.log(`Invalid Computer input ${computer_guess}`);
+        }
+
+        computer_score_elem.textContent = computer_score;
+        human_score_elem.textContent = human_score;
+    }
+</script>
+
+</html>
